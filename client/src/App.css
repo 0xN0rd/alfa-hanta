@@ -1,6 +1,7 @@
 .App {
   height: 100vh;
-  background-color: #0d1116;
+  background-color: #e5c70b;
+  background-image: url(https://uploads-ssl.webflow.com/626c1d7d929822114a3572ab/626c2ed57d79b5bd1e23f6b0_bg.png);
   overflow: scroll;
   text-align: center;
 }
@@ -15,6 +16,7 @@
 
 .header-container {
   padding-top: 30px;
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .header {
@@ -68,7 +70,7 @@
 }
 
 .mint-button {
-  background: -webkit-linear-gradient(left, #a200d6, #ff6fdf);
+  background: -webkit-linear-gradient(left, #1a275f, #2b409d);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
   margin-right: 15px;
@@ -84,8 +86,43 @@
 .dataContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   max-width: 600px;
+  margin-bottom: 5rem;
+}
+
+.dataContainer input[type="text"] {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  padding: 10px;
+  width: 75%;
+  height: 60px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #f4f4f7;
+  border: solid 2px;
+  border-color: #1a275f;
+  border-radius: 10px;
+  margin: 12px auto;
+}
+
+.mint-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-gap: 1.5rem;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.mint-grid .mint-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-self: center;
+  align-self: center;
 }
 
 .bio {

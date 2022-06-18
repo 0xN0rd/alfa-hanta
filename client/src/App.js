@@ -9,8 +9,9 @@ import LoadingIndicator from './components/LoadingIndicator';
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [nftContract, setNftContract] = useState(null);
-  const [amount, setAmount] = useState('');
-  const [tokenId, setTokenId] = useState('');
+  const [inputData, setInputData] = useState({});
+
+  const { amount, tokenId } = inputData;
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -84,19 +85,15 @@ const App = () => {
   }, []);
 
   const onAlfaPassInputChange = (event) => {
-    const { amount, tokenId } = event.target;
-    setAmount(amount);
-    setTokenId(tokenId);
+    setInputData({ [event.target.name]: event.target.value });
   }
 
   const onAllowListInputChange = (event) => {
-    const { amount } = event.target;
-    setAmount(amount);
+    setInputData({ [event.target.name]: event.target.value });
   }
 
   const onPublicMintInputChange = (event) => {
-    const { amount } = event.target;
-    setAmount(amount);
+    setInputData({ [event.target.name]: event.target.value });
   }
 
   const alfaPassMint = async () => {
@@ -113,9 +110,11 @@ const App = () => {
     try {
       if (nftContract) {
         const ethAmount = 0.04;
+        const value = (ethAmount * amount);
+        const mintValue = ethers.utils.parseEther(value.toString());
         const mintTxn = await nftContract.alfaPassMintMultiple(
-          amount, tokenId, {
-            value: (ethAmount * amount).toString(), gasPrice: 20e10
+          amount.toString(), tokenId.toString(), {
+            value: mintValue,
           }
         )
         await mintTxn.wait();
@@ -136,12 +135,15 @@ const App = () => {
     try {
       if (nftContract) {
         const ethAmount = 0.1;
+        const value = (ethAmount * amount);
+        const mintValue = ethers.utils.parseEther(value.toString());
         const mintTxn = await nftContract.mintAllowList(
-          amount, {
-            value: (ethAmount * amount).toString(), gasPrice: 20e10
+          amount.toString(), {
+            value: mintValue,
           }
         )
         await mintTxn.wait();
+        console.log('Mint complete');
       } else {
         console.log('Ethereum object does not exist');
       }
@@ -159,9 +161,11 @@ const App = () => {
     try {
       if (nftContract) {
         const ethAmount = 0.1;
+        const value = (ethAmount * amount);
+        const mintValue = ethers.utils.parseEther(value.toString());
         const mintTxn = await nftContract.publicMint(
-          amount, {
-            value: (ethAmount * amount).toString(), gasPrice: 20e10
+          amount.toString(), {
+            value: mintValue,
           }
         )
         await mintTxn.wait();
@@ -187,6 +191,7 @@ const App = () => {
             <div>
               <div className="header">Alfa Pass Mint</div>
               <form
+                className="dataContainer"
                 onSubmit={(event) => {
                   event.preventDefault();
                   alfaPassMint();
@@ -194,17 +199,17 @@ const App = () => {
               >
                 <input
                   type="text"
-                  placeholder="Enter amount"
-                  value={amount}
+                  name="amount"
+                  placeholder="Enter Amount"
                   onChange={onAlfaPassInputChange}
                 />
                 <input
                   type="text"
-                  placeholder="Enter Alfa Pass token id"
-                  value={tokenId}
+                  name="tokenId"
+                  placeholder="Enter Alfa Pass Token ID"
                   onChange={onAlfaPassInputChange}
                 />
-                <button type="submit" className="cta-button submit-gif-button">
+                <button type="submit" className="cta-button mint-button">
                   Mint
                 </button>
               </form>
@@ -212,6 +217,7 @@ const App = () => {
             <div>
               <div className="header">Whitelist Mint</div>
               <form
+                className="dataContainer"
                 onSubmit={(event) => {
                   event.preventDefault();
                   allowListMint();
@@ -219,11 +225,11 @@ const App = () => {
               >
                 <input
                   type="text"
-                  placeholder="Enter amount"
-                  value={amount}
+                  name="amount"
+                  placeholder="Enter Amount"
                   onChange={onAllowListInputChange}
                 />
-                <button type="submit" className="cta-button submit-gif-button">
+                <button type="submit" className="cta-button mint-button">
                   Mint
                 </button>
               </form>
@@ -231,6 +237,7 @@ const App = () => {
             <div>
               <div className="header">Public Mint</div>
               <form
+                className="dataContainer"
                 onSubmit={(event) => {
                   event.preventDefault();
                   publicMint();
@@ -238,11 +245,11 @@ const App = () => {
               >
                 <input
                   type="text"
-                  placeholder="Enter amount"
-                  value={amount}
+                  name="amount"
+                  placeholder="Enter Amount"
                   onChange={onPublicMintInputChange}
                 />
-                <button type="submit" className="cta-button submit-gif-button">
+                <button type="submit" className="cta-button mint-button">
                   Mint
                 </button>
               </form>
@@ -260,7 +267,7 @@ const App = () => {
       <div className="mainContainer">
         <div className="dataContainer">
           <div className="header">
-            Hey there!
+            <img src="https://uploads-ssl.webflow.com/626c1d7d929822114a3572ab/626c2288b5f669082a203941_Alfa%20Hanta%20text.png" alt="Alfa Hanta nametag" />
           </div>
           {renderContent()}
           
