@@ -20,7 +20,13 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 
 import "hardhat/console.sol";
 
-contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, Ownable {
+contract AlfaHanta is
+    ERC721,
+    ERC721Enumerable,
+    ERC721Burnable,
+    ERC721Pausable,
+    Ownable
+{
     using SafeMath for uint256;
     using Counters for Counters.Counter;
 
@@ -32,21 +38,23 @@ contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, 
     uint256 public constant ALFA_PASS_PRICE = 0.04 ether;
     uint256 public constant PRICE = 0.1 ether;
     uint256 public constant MAX_ELEMENTS = 4000;
-    address public constant creatorAddress = 0xa02AB1bb0DF047C3655624E30B6015E0a872d141;
+    address public constant creatorAddress =
+        0x3E4e789b2FCb30AbEa420705610895D307d4F866;
 
-    string private URI = '';
+    string private URI = "";
 
     // Alfa Pass contract
-    IERC721Enumerable IBaseContract = IERC721Enumerable(0x0);
+    IERC721Enumerable IBaseContract =
+        IERC721Enumerable(0xA4e646D987211b407833820E7a5A36783d8f896c);
 
     mapping(uint256 => bool) public claimedHanta;
     mapping(address => uint256) private _allowList;
 
-    constructor() ERC721("Alfa Hanta", "#AlfaHanta") {
+    constructor() ERC721("Alfa Hanta", "AlfaHanta") {
         pause(true);
     }
 
-    modifier saleIsOpen {
+    modifier saleIsOpen() {
         require(_totalSupply() <= MAX_ELEMENTS, "Sale over");
         if (_msgSender() != owner()) {
             require(!paused(), "Pausable: paused");
@@ -64,7 +72,7 @@ contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, 
         }
     }
 
-    function _totalSupply() internal view returns (uint) {
+    function _totalSupply() internal view returns (uint256) {
         return _tokenIdTracker.current();
     }
 
@@ -89,21 +97,27 @@ contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, 
     }
 
     function _mint(address _to) private {
-        uint id = _totalSupply();
+        uint256 id = _totalSupply();
         _tokenIdTracker.increment();
         _safeMint(_to, id);
     }
 
     function _alfaPassMint(uint256 tokenId) private {
         require(!claimedHanta[tokenId], "Hanta NFT already claimed");
-        require(IBaseContract.ownerOf(tokenId) == msg.sender, 'Alfa Pass not owned');
-        uint id = _totalSupply();
+        require(
+            IBaseContract.ownerOf(tokenId) == msg.sender,
+            "Alfa Pass not owned"
+        );
+        uint256 id = _totalSupply();
         _tokenIdTracker.increment();
         _safeMint(msg.sender, id);
         claimedHanta[tokenId] = true;
     }
 
-    function alfaPassMintMultiple(uint256 amount, uint256[] calldata tokenIds) public payable {
+    function alfaPassMintMultiple(uint256 amount, uint256[] calldata tokenIds)
+        public
+        payable
+    {
         uint256 total = _totalSupply();
         require(total + amount <= MAX_ELEMENTS, "Max limit");
         require(total <= MAX_ELEMENTS, "Sale over");
@@ -117,7 +131,10 @@ contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, 
     function mintAllowList(uint256 amount) external payable {
         uint256 total = _totalSupply();
         require(isAllowListActive, "Allow list is not active");
-        require(amount <= _allowList[msg.sender], "Exceeds max available to purchase");
+        require(
+            amount <= _allowList[msg.sender],
+            "Exceeds max available to purchase"
+        );
         require(total + amount <= MAX_ELEMENTS, "Exceeds number");
         require(msg.value >= price(amount), "Ether value sent is not correct");
 
@@ -138,7 +155,11 @@ contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, 
         }
     }
 
-    function walletOfOwner(address _owner) external view returns (uint256[] memory) {
+    function walletOfOwner(address _owner)
+        external
+        view
+        returns (uint256[] memory)
+    {
         uint256 tokenCount = balanceOf(_owner);
 
         uint256[] memory tokensId = new uint256[](tokenCount);
@@ -164,8 +185,8 @@ contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, 
     }
 
     function _withdraw(address _address, uint256 _amount) private {
-        (bool success, ) = _address.call{value: _amount}('');
-        require(success, 'Transfer failed.');
+        (bool success, ) = _address.call{value: _amount}("");
+        require(success, "Transfer failed.");
     }
 
     function _beforeTokenTransfer(
@@ -180,7 +201,7 @@ contract AlfaHanta is ERC721, ERC721Enumerable, ERC721Burnable, ERC721Pausable, 
         public
         view
         override(ERC721, ERC721Enumerable)
-        returns(bool)
+        returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }
