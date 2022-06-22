@@ -201,12 +201,6 @@ const App = () => {
               >
                 <input
                   type="text"
-                  name="amount"
-                  placeholder="Enter Amount"
-                  onChange={onAlfaPassInputChange}
-                />
-                <input
-                  type="text"
                   name="tokenId"
                   placeholder="Enter Alfa Pass Token ID"
                   onChange={onAlfaPassInputChange}
