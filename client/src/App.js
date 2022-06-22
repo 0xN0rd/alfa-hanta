@@ -110,10 +110,11 @@ const App = () => {
     try {
       if (nftContract) {
         const ethAmount = 0.04;
+        const number = 1;
         const value = (ethAmount * amount);
-        const mintValue = ethers.utils.parseEther(value.toString());
+        const mintValue = ethers.utils.parseEther(ethAmount.toString());
         const mintTxn = await nftContract.alfaPassMintMultiple(
-          amount.toString(), tokenId.toString(), {
+          number.toString(), [tokenId.toString()], {
             value: mintValue,
           }
         )
@@ -190,6 +191,7 @@ const App = () => {
           <div className="connected-container">
             <div>
               <div className="header">Alfa Pass Mint</div>
+              <div className="sub-text">You must hold an Alfa Pass NFT to mint.</div>
               <form
                 className="dataContainer"
                 onSubmit={(event) => {
@@ -216,6 +218,7 @@ const App = () => {
             </div>
             <div>
               <div className="header">Whitelist Mint</div>
+              <div className="sub-text">You must be added to whitelist to mint.</div>
               <form
                 className="dataContainer"
                 onSubmit={(event) => {
@@ -236,6 +239,7 @@ const App = () => {
             </div>
             <div>
               <div className="header">Public Mint</div>
+              <div className="sub-text">For everyone else!</div>
               <form
                 className="dataContainer"
                 onSubmit={(event) => {

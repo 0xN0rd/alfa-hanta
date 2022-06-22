@@ -33,6 +33,10 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
       url: 'https://goerli.infura.io/v3/acd3501ee5a14350823d26b521655b4c',
       accounts: [`0x${PRIVATE_KEY}`],
     },
+    rinkeby: {
+      url: 'https://rinkeby.infura.io/v3/acd3501ee5a14350823d26b521655b4c',
+      accounts: [`0x${PRIVATE_KEY}`],
+    }
   },
   etherscan: {
     apiKey: "AGVGK5BBTKGRJ92PBFR2F6E6DBGKJB46E1"

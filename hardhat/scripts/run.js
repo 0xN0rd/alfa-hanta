@@ -4,6 +4,7 @@ const main = async () => {
   await nftContract.deployed();
   console.log('Contract deployed to:', nftContract.address);
   
+  {/*
   let txn;
   txn = await nftContract.setAllowList([0x3E4e789b2FCb30AbEa420705610895D307d4F866]);
   await txn.wait();
@@ -20,6 +21,7 @@ const main = async () => {
   txn = await nftContract.mintAllowList(1);
   await txn.wait();
   console.log('Mint using Allow List completed.');
+*/}
 
   console.log('Done deploying. Pogger City - population you, bro!');
 }

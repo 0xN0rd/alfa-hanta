@@ -33,6 +33,7 @@ contract AlfaHanta is
     Counters.Counter private _tokenIdTracker;
 
     bool public isAllowListActive = false;
+    bool public isPublicLive = false;
     uint256 public constant MAX_PER_TXN = 5;
     uint256 public constant MAX_WHITELIST_MINT = 2;
     uint256 public constant ALFA_PASS_PRICE = 0.04 ether;
@@ -60,6 +61,10 @@ contract AlfaHanta is
             require(!paused(), "Pausable: paused");
         }
         _;
+    }
+
+    function setIsPublicLive(bool _isPublicLive) external onlyOwner {
+        isPublicLive = _isPublicLive;
     }
 
     function setIsAllowListActive(bool _isAllowListActive) external onlyOwner {
@@ -146,6 +151,7 @@ contract AlfaHanta is
 
     function publicMint(uint256 amount) public payable saleIsOpen {
         uint256 total = _totalSupply();
+        require(isPublicLive, "Public Mint is not live");
         require(amount <= MAX_PER_TXN, "Exceeds number");
         require(amount + total <= MAX_ELEMENTS);
         require(msg.value >= price(amount));
